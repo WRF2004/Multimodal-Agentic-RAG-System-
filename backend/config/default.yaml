@@ -1,0 +1,128 @@
+# ============================================================
+# Agentic RAG System - Default Configuration
+# ============================================================
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  cors_origins: ["http://localhost:5173", "http://localhost:3000"]
+
+# --- LLM ---
+llm:
+  provider: "openai_compatible"
+  base_url: "https://api.openai.com/v1"
+  api_key: "${OPENAI_API_KEY}"
+  model: "gpt-4o"
+  temperature: 0.7
+  max_tokens: 4096
+  timeout: 60
+
+# --- Embedding ---
+embedding:
+  provider: "openai"
+  base_url: "https://api.openai.com/v1"
+  api_key: "${OPENAI_API_KEY}"
+  model: "text-embedding-3-small"
+  dimensions: 1536
+  batch_size: 64
+
+# --- Vector Store ---
+vectorstore:
+  provider: "qdrant"  # chroma | qdrant | milvus | pgvector
+  qdrant:
+    url: "http://localhost:6333"
+    collection_name: "documents"
+  chroma:
+    persist_directory: "./data/chroma"
+    collection_name: "documents"
+  pgvector:
+    connection_string: "postgresql://user:pass@localhost:5432/rag"
+
+# --- Retrieval ---
+retrieval:
+  mode: "hybrid"  # dense | sparse | hybrid
+  top_k: 20
+  hybrid:
+    dense_weight: 0.7
+    sparse_weight: 0.3
+  sparse:
+    algorithm: "bm25"
+    k1: 1.5
+    b: 0.75
+
+# --- Reranker ---
+reranker:
+  enabled: true
+  provider: "bge"  # bge | cohere | cross_encoder | none
+  model: "BAAI/bge-reranker-v2-m3"
+  top_k: 5
+  bge:
+    model_path: "BAAI/bge-reranker-v2-m3"
+  cohere:
+    api_key: "${COHERE_API_KEY}"
+    model: "rerank-multilingual-v3.0"
+
+# --- Chunking ---
+chunking:
+  strategy: "semantic"  # fixed | recursive | semantic
+  fixed:
+    chunk_size: 512
+    chunk_overlap: 50
+  recursive:
+    chunk_size: 512
+    chunk_overlap: 50
+    separators: ["\n\n", "\n", "。", ".", " "]
+  semantic:
+    max_chunk_size: 1024
+    min_chunk_size: 100
+    similarity_threshold: 0.75
+
+# --- Agent ---
+agent:
+  strategy: "react"  # react | planner | function_calling
+  max_iterations: 10
+  tools:
+    - "retrieval"
+    - "web_search"
+    - "calculator"
+
+# --- Multimodal ---
+multimodal:
+  ocr:
+    enabled: true
+    provider: "tesseract"  # tesseract | paddle | api
+  asr:
+    enabled: true
+    provider: "whisper"  # whisper | api
+    whisper:
+      model_size: "base"
+
+# --- Conversation ---
+conversation:
+  max_history_turns: 20
+  compression:
+    strategy: "sliding_window"  # truncation | summarization | sliding_window
+    window_size: 10
+  coreference_resolution: true
+
+# --- Database ---
+database:
+  url: "postgresql+asyncpg://postgres:postgres@localhost:5432/agentic_rag"
+  echo: false
+  pool_size: 20
+
+# --- Redis ---
+redis:
+  url: "redis://localhost:6379/0"
+  ttl: 3600
+
+# --- RabbitMQ ---
+rabbitmq:
+  url: "amqp://guest:guest@localhost:5672/"
+  queue_name: "document_processing"
+
+# --- Evaluation ---
+evaluation:
+  metrics: ["recall", "mrr", "ndcg", "precision", "hit_rate", "map"]
+  datasets_dir: "./data/eval_datasets"

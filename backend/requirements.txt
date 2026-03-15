@@ -1,0 +1,63 @@
+# Core
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.3
+pydantic-settings==2.7.0
+python-multipart==0.0.18
+pyyaml==6.0.2
+
+# Async
+aiohttp==3.11.11
+aiofiles==24.1.0
+httpx==0.28.1
+
+# Database
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.0
+
+# Redis
+redis[hiredis]==5.2.1
+
+# RabbitMQ
+aio-pika==9.5.4
+
+# Vector stores
+chromadb==0.5.23
+qdrant-client==1.12.1
+# pymilvus==2.4.9  # Optional
+
+# LLM & Embedding
+openai==1.58.1
+tiktoken==0.8.0
+sentence-transformers==3.3.1
+
+# Retrieval
+rank-bm25==0.2.2
+
+# Reranking
+# FlagEmbedding==1.2.11  # For BGE reranker
+
+# Document processing
+pypdf==5.1.0
+python-docx==1.1.2
+openpyxl==3.1.5
+beautifulsoup4==4.12.3
+markdown==3.7
+
+# Multimodal
+pytesseract==0.3.13
+Pillow==11.0.0
+# paddleocr  # Optional
+# openai-whisper  # Optional
+
+# Evaluation
+numpy==2.2.1
+pandas==2.2.3
+scikit-learn==1.6.0
+
+# Utils
+python-dotenv==1.0.1
+tenacity==9.0.0
+structlog==24.4.0
+uuid6==2024.7.10
